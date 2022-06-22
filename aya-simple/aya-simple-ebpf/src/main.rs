@@ -16,6 +16,10 @@ static mut TEST_MAP: HashMap<u64, u64> = HashMap::<u64, u64>::with_max_entries(1
 pub fn xdp(ctx: XdpContext) -> u32 {
     let key: u64 = 0;
     unsafe {
+        match TEST_MAP.get_ptr(&key) {
+            None => info!(&ctx, "None"),
+            Some(result) => info!(&ctx, "Some"),
+        }
         match TEST_MAP.remove(&key) {
             Ok(_) => info!(&ctx, "Ok"),
             Err(error) => info!(&ctx, "Error: {}", error),
